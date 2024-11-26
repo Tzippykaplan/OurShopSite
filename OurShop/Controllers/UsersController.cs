@@ -15,16 +15,16 @@ namespace OurShop.Controllers
     {
         IUserService _userService;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService iUserService)
         {
-            _userService = userService;
+            _userService = iUserService;
         }
 
         // GET: api/<UsersController>
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new string[] { "Tzippy", "Chani" };
+            return new string[] { "Tzippy", "Kaplan" };
         }
 
         // GET api/<UsersController>/5
