@@ -30,8 +30,10 @@ const updateUser = async () => {
             },
             body: JSON.stringify(user)
         });
-       // if (responsePut.status == 204) 
+       // if (responsePut.status == 204)
         // alert("User nor found")
+        //if status==400
+        //weak password
         if (!responsePut.ok) { 
         const dataPut = await responsePut.json();
             alert(`User ${dataPut.FullName} updated successfuly` )}

@@ -18,6 +18,8 @@ const createUser = async () => {
             },
             body: JSON.stringify(user)
         });
+        //if status==400
+        //weak password
         if (!responsePost.ok) { 
            
             alert("Error,plese try again")}

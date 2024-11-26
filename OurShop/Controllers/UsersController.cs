@@ -43,7 +43,7 @@ namespace OurShop.Controllers
         public ActionResult<User> Post  ([FromBody] User user)
         {
             try { 
-            _userService.AddUser(user);
+            _userService.AddUser(user);//save the result, you should know if created
                 return CreatedAtAction(nameof(Get), new { id = user.UserId }, user);
             }
             catch (Exception e)

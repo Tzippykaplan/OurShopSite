@@ -36,7 +36,7 @@ namespace Services
             return _userRepository.loginUser(email, password);
         }
         public User uppdateUser(int id, User userToUpdate)
-        {
+        {//check password strength
             return _userRepository.uppdateUser(id, userToUpdate);
         }
         public int checkPasswordStrength(string password)
