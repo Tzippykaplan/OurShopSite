@@ -15,16 +15,16 @@ namespace OurShop.Controllers
     {
         IUserService _userService;
 
-        public UsersController(IUserService iUserService)
+        public UsersController(IUserService userService)
         {
-            _userService = iUserService;
+            _userService = userService;
         }
 
         // GET: api/<UsersController>
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new string[] { "Tzippy", "Kaplan" };
+            return new string[] { "Tzippy", "Chani" };
         }
 
         // GET api/<UsersController>/5
@@ -43,7 +43,7 @@ namespace OurShop.Controllers
         public ActionResult<User> Post  ([FromBody] User user)
         {
             try { 
-            _userService.AddUser(user);
+            _userService.AddUser(user);//save the result, you should know if created
                 return CreatedAtAction(nameof(Get), new { id = user.UserId }, user);
             }
             catch (Exception e)
