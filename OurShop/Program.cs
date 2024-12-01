@@ -1,5 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using Repositories;
 using Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService,UserService>();
+builder.Services.AddDbContext<ShopContext>(options => options.UseSqlServer("Server=TZIPPY53\\SQLEXPRESS; Database=Shop; Trusted_Connection=True; TrustServerCertificate=True")
+);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -67,8 +67,9 @@ const login = async () => {
         if (!responsePost.ok) 
         alert("Eror,please try again")
         else {
-        const dataPost = await responsePost.json();
-        sessionStorage.setItem("id", dataPost.userId)
+            const dataPost = await responsePost.json();
+            
+        sessionStorage.setItem("id", dataPost.id)
         sessionStorage.setItem("userName", dataPost.fullName)
          alert(`${dataPost.fullName} login `)
          window.location.href = "details.html"

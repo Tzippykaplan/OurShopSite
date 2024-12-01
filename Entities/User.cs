@@ -1,31 +1,25 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace Entities
+namespace Entities;
 
+public partial class User
 {
-    public class User
-    {
-        #region props
-        [ Required]
-        public int UserId { get; set; }
+    [Required]
+    public int Id { get; set; }
 
+    [MaxLength(15, ErrorMessage = "name cannot be longer than 15 characters")]
 
-        [MaxLength(15, ErrorMessage = "name cannot be longer than 15 characters")]
-        public string FullName { get; set; }
+    public string FullName { get; set; } = null!;
 
-        [EmailAddress, Required]
-        public string Email { get; set; }
+    [EmailAddress, Required]
 
-        [StringLength(15, ErrorMessage = "password must contain 15 characters"), Required]
-        public string Password { get; set; }
-        public string Phone { get; set; }
+    public string Email { get; set; } = null!;
 
-        #endregion
+    [StringLength(15, ErrorMessage = "password must contain 15 characters"), Required]
 
+    public string Password { get; set; } = null!;
 
-
-
-
-
-    }
+    public string? Phone { get; set; }
 }

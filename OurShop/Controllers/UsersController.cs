@@ -31,7 +31,7 @@ namespace OurShop.Controllers
         [HttpGet("{id}")]
         public ActionResult<User> Get(int id)
         {
-            User checkUser = _userService.getUserById(id);
+            Task<User> checkUser = _userService.getUserById(id);
             if (checkUser != null)
                 return Ok(checkUser);
             else
@@ -44,7 +44,7 @@ namespace OurShop.Controllers
         {
             try { 
             _userService.AddUser(user);
-                return CreatedAtAction(nameof(Get), new { id = user.UserId }, user);
+                return CreatedAtAction(nameof(Get), new { id = user.Id }, user);
             }
             catch (Exception e)
             {
@@ -56,7 +56,7 @@ namespace OurShop.Controllers
         public ActionResult Login([FromQuery]string email, [FromQuery] string password)
             
         {
-            User checkUser = _userService.loginUser(email, password);
+           User checkUser = _userService.loginUser(email, password);
            if (checkUser!=null)
                         return Ok(checkUser);
                    else
@@ -78,7 +78,7 @@ namespace OurShop.Controllers
         [HttpPut("{id}")]
         public ActionResult<User> Put (int id, [FromBody] User userToUpdate)
         {
-            User checkUser = _userService.uppdateUser(id, userToUpdate);
+            Task<User> checkUser = _userService.uppdateUser(id, userToUpdate);
             if (checkUser != null)
                 return Ok(checkUser);
             else

@@ -18,12 +18,12 @@ namespace Services
             _userRepository = userRepository;
         }
 
-        public User getUserById(int id)
+        public Task<User> getUserById(int id)
         {
             return _userRepository.getUserById(id);
 
         }
-        public User AddUser(User user)
+        public Task<User> AddUser(User user)
         {
             int PasswordStrength = checkPasswordStrength(user.Password);
             if (PasswordStrength > 2)
@@ -33,9 +33,9 @@ namespace Services
         }
         public User loginUser(string email, string password)
         {
-            return _userRepository.loginUser(email, password);
+            return  _userRepository.loginUser(email, password);
         }
-        public User uppdateUser(int id, User userToUpdate)
+        public Task<User> uppdateUser(int id, User userToUpdate)
         {
             return _userRepository.uppdateUser(id, userToUpdate);
         }
