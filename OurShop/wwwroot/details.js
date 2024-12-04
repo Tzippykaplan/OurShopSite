@@ -17,10 +17,7 @@ const showUpdate = () => {
 }
 
 const updateUser = async () => {
-    const user = getDataFromDocument();
-
-    alert(user.fullName)
-
+   const user = getDataFromDocument();
     try {
         const id = sessionStorage.getItem("id")
         const responsePut = await fetch(`api/users/${id}`, {

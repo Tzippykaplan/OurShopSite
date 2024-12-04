@@ -52,6 +52,21 @@ namespace OurShop.Controllers
             }
 
         }
+        [HttpPut("{id}")]
+        public IActionResult Put(int id,[FromBody] User userToUpdate )
+        {
+            try
+            {
+                _userService.uppdateUser(id, userToUpdate);
+               
+            }
+            catch (Exception e)
+            {
+                return BadRequest();
+            } 
+            return Ok();
+
+        }
         [HttpPost("login")]
         public ActionResult Login([FromQuery]string email, [FromQuery] string password)
             
@@ -74,18 +89,7 @@ namespace OurShop.Controllers
 
         }
 
-        // PUT api/<UsersController>/5
-        [HttpPut("{id}")]
-        public ActionResult<User> Put (int id, [FromBody] User userToUpdate)
-        {
-            Task<User> checkUser = _userService.uppdateUser(id, userToUpdate);
-            if (checkUser != null)
-                return Ok(checkUser);
-            else
-                return BadRequest();
-           
-
-        }
+       
 
         // DELETE api/<UsersController>/5
         [HttpDelete("{id}")]

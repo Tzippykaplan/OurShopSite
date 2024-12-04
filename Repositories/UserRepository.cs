@@ -42,17 +42,18 @@ namespace Repositories
             return result;
 
         }
-        public async Task<User> uppdateUser(int id, User newUser)
+        public async Task uppdateUser(int id, User newUser)
         {
-            var userToUpdate = await _shopContext.Users.FindAsync(id);
-            if (userToUpdate == null)
-            {
-                return null;
-            }
-            newUser.Id = userToUpdate.Id;
-            _shopContext.Entry(userToUpdate).CurrentValues.SetValues(newUser);
+            newUser.Id = id;
+            //var userToUpdate = await _shopContext.Users.FindAsync(id);
+            //if (userToUpdate == null)
+            //{
+            //    return null;
+            //}
+            //newUser.Id = userToUpdate.Id;
+            _shopContext.Update(newUser);
             await _shopContext.SaveChangesAsync();
-            return (newUser);
+
 
         }
 
