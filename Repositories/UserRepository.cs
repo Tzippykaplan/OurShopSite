@@ -32,17 +32,19 @@ namespace Repositories
         public async Task<User> addUser(User user)
         {
             await _shopContext.Users.AddAsync(user);
+            //var res=await _shopContext.Users.AddAsync(user);
             await _shopContext.SaveChangesAsync();
+            //return res- the created user with the id
             return (user);
         }
         public  User loginUser(string email, string password)
         {
-            var res = _shopContext.Users;
+            var res = _shopContext.Users;//?
             var result=  _shopContext.Users.First(user => user.Email == email && user.Password == password);
             return result;
 
         }
-        public async Task uppdateUser(int id, User newUser)
+        public async Task uppdateUser(int id, User newUser)//return user
         {
             newUser.Id = id;
             //var userToUpdate = await _shopContext.Users.FindAsync(id);
