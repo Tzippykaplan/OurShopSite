@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using Entities;
 using Services;
+using DTO;
+using AutoMapper;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,37 +16,35 @@ namespace OurShop.Controllers
     public class UsersController : ControllerBase
     {
         IUserService _userService;
+        IMapper _mapper;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, IMapper mapper)
         {
             _userService = userService;
-        }
-
-        // GET: api/<UsersController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "Tzippy", "Chani" };
+            _mapper = mapper;
         }
 
         // GET api/<UsersController>/5
         [HttpGet("{id}")]
-        public ActionResult<User> Get(int id)
+        public async Task<ActionResult<User>> Get(int id)
         {
-            Task<User> checkUser = _userService.getUserById(id);
+            User checkUser = await _userService.getUserById(id);
             if (checkUser != null)
-                return Ok(checkUser);
+                return Ok(_mapper.Map<User, UserByIdDto>(checkUser));
             else
                 return NotFound();
         }
 
         // POST api/<UsersController>
         [HttpPost]
-        public ActionResult<User> Post  ([FromBody] User user)
+        public async Task<ActionResult<User>> Post([FromBody] addUserDto user)
         {
-            try { 
-            _userService.AddUser(user);
-                return CreatedAtAction(nameof(Get), new { id = user.Id }, user);
+            try
+            {
+                User ParsedUser = _mapper.Map<addUserDto, User>(user);
+                await _userService.AddUser(ParsedUser);
+                
+                return CreatedAtAction(nameof(Get), new { id = ParsedUser.UserId }, _mapper.Map<addUserDto, returnPostUserDto>(user));
             }
             catch (Exception e)
             {
@@ -52,45 +52,44 @@ namespace OurShop.Controllers
             }
 
         }
-        [HttpPost("login")]
-        public ActionResult Login([FromQuery]string email, [FromQuery] string password)
-            
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody] addUserDto userToUpdate)
         {
-           User checkUser = _userService.loginUser(email, password);
-           if (checkUser!=null)
-                        return Ok(checkUser);
-                   else
-            return NotFound();
+            try
+            {
+                await _userService.updateUser(id, _mapper.Map<addUserDto,User>(userToUpdate));
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest();
+            }
+            return Ok();
+
+        }
+        [HttpPost("login")]
+        public async Task<ActionResult<User>> Login([FromQuery] string email, [FromQuery] string password)
+
+        {
+            User checkUser = await _userService.loginUser(email, password);
+            if (checkUser != null)
+                return Ok(_mapper.Map<User, returnLoginUserDto>(checkUser));
+            else
+                return NotFound();
 
 
         }
         [HttpPost("passwordStrength")]
-        public ActionResult< int> checkPasswordStrength( [FromQuery] string password)
+        public ActionResult<int> checkPasswordStrength([FromQuery] string password)
 
         {
-            int passwordStrength = _userService.checkPasswordStrength( password);
+            int passwordStrength = _userService.checkPasswordStrength(password);
             return passwordStrength;
 
 
         }
 
-        // PUT api/<UsersController>/5
-        [HttpPut("{id}")]
-        public ActionResult<User> Put (int id, [FromBody] User userToUpdate)
-        {
-            Task<User> checkUser = _userService.uppdateUser(id, userToUpdate);
-            if (checkUser != null)
-                return Ok(checkUser);
-            else
-                return BadRequest();
-           
 
-        }
 
-        // DELETE api/<UsersController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

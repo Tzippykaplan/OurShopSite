@@ -7,7 +7,7 @@ namespace Services
         Task<User> AddUser(User user);
         int checkPasswordStrength(string password);
         Task<User> getUserById(int id);
-        User loginUser(string email, string password);
-        Task<User> uppdateUser(int id, User userToUpdate);
+        Task<User> loginUser(string email, string password);
+        Task updateUser(int id, User userToUpdate);
     }
 }

@@ -18,26 +18,26 @@ namespace Services
             _userRepository = userRepository;
         }
 
-        public Task<User> getUserById(int id)
+        public async Task<User> getUserById(int id)
         {
-            return _userRepository.getUserById(id);
+            return await _userRepository.getUserById(id);
 
         }
-        public Task<User> AddUser(User user)
+        public async Task<User> AddUser(User user)
         {
             int PasswordStrength = checkPasswordStrength(user.Password);
             if (PasswordStrength > 2)
-                return _userRepository.addUser(user);
+                return await _userRepository.addUser(user);
             else
                 throw new Exception(PasswordStrength.ToString());
         }
-        public User loginUser(string email, string password)
+        public async Task<User> loginUser(string email, string password)
         {
-            return  _userRepository.loginUser(email, password);
+            return await _userRepository.loginUser(email, password);
         }
-        public Task<User> uppdateUser(int id, User userToUpdate)
+        public Task updateUser(int id, User userToUpdate)
         {
-            return _userRepository.uppdateUser(id, userToUpdate);
+            return _userRepository.updateUser(id, userToUpdate);
         }
         public int checkPasswordStrength(string password)
         {
