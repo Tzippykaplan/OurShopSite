@@ -21,10 +21,22 @@ namespace Repositories
             _shopContext = shopContext;
         }
 
-        public async Task<List<Product>> getProducts()
+        public async Task<List<Product>> getProducts(string? desc, int? minPrice, int? maxPrice, int?[] categoryIds)
         {
-            List<Product> allProducts = await _shopContext.Products.Include(p => p.Category).ToListAsync();
-            return allProducts;
+            var query = _shopContext.Products.Include(p => p.Category).Where(product =>
+             (desc == null ? (true) : (product.Description.Contains(desc)))
+             && ((minPrice == null) ? (true) : (product.Price >= minPrice))
+             && ((maxPrice == null) ? (true) : (product.Price <= maxPrice))
+             && ((categoryIds.Length == 0) ? (true) : (categoryIds.Contains(product.CategoryId))))
+            .OrderBy(product => product.Price);
+            Console.WriteLine(query.ToQueryString());
+            List<Product> products = await query.ToListAsync();
+            return products;
+            ////List<Product> product = await myShop.Products.Include(c => c.Category).ToListAsync();
+            ////return product;
+
+            //List<Product> allProducts = await _shopContext.Products.Include(p => p.Category).ToListAsync();
+            //return allProducts;
         }
 
 

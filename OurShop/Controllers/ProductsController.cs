@@ -20,11 +20,10 @@ namespace OurShop.Controllers
             _mapper = mapper;
         }
 
-
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> Get()
+        public async Task<ActionResult<IEnumerable<Product>>> Get(string? desc, int? minPrice, int? maxPrice, [FromQuery] int?[] categoryIds)
         {
-            List<Product> checkProduct = await _productService.getProducts();
+            List<Product> checkProduct = await _productService.getProducts(desc,minPrice,maxPrice,categoryIds);
             if (checkProduct != null)
                 return Ok(_mapper.Map<List<Product>, List<ProductDto>>(checkProduct));
             else
