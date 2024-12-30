@@ -105,7 +105,7 @@ const updateUser = async () => {
 }
 const  checkPasswordStrength = async ( password) => {
     try {
-        const passwordStrength = await fetch(`api/users/passwordStrength?password=${password}`, {
+        const passwordStrength = await fetch(`api/Users/passwordStrength?password=${password}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -113,9 +113,10 @@ const  checkPasswordStrength = async ( password) => {
             query: {
                 password: password
             }
-        });
-        const p = await passwordStrength.json()
-        return p;
+        }
+      const p = await passwordStrength.json()
+        return p);
+ 
        
     }
     catch (error) {
@@ -125,6 +126,7 @@ const  checkPasswordStrength = async ( password) => {
 const fillProgress = async ()=>{
     const progress = document.getElementById("progress")
     const password = document.getElementById("password").value
+    console.log(password)
     const passwordStrength = await checkPasswordStrength(password);
     progress.value = passwordStrength;
    
