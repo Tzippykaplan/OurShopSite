@@ -1,5 +1,4 @@
 ﻿
-
 const getDataFromDocument = () => {
     const firstName = document.querySelector("#firstName").value;
     const lastName = document.querySelector("#lastName").value;
@@ -91,7 +90,7 @@ const updateUser = async () => {
             },
             body: JSON.stringify(user)
         });
-        if (!responsePost.ok)
+        if (!responsePut.ok)
             alert("Eror,please try again")
         else {
             const dataPut = await responsePut.json();
@@ -115,7 +114,7 @@ const  checkPasswordStrength = async ( password) => {
             }
         }
       const p = await passwordStrength.json()
-        return p);
+        return p;
  
        
     }
