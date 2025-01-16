@@ -1,12 +1,12 @@
 ﻿window.addEventListener("load", loadPage = () => {
     getCartItens();
     setQuantityAndTotalPrice()
-    
+
 });
 let totalPrice = 0
 let quantity = 0
 setQuantityAndTotalPrice = () => {
-    const cart = JSON.parse(sessionStorage.getItem("cart")||"[]")
+    const cart = JSON.parse(sessionStorage.getItem("cart") || "[]")
     cart.forEach(item => {
         totalPrice += (item.product.price * item.amount)
         quantity += item.amount
@@ -21,7 +21,7 @@ const setTextQuantityAndTotalPrice = () => {
 }
 
 const getCartItens = () => {
-    drawCartItens(JSON.parse(sessionStorage.getItem("cart"))||[])
+    drawCartItens(JSON.parse(sessionStorage.getItem("cart")) || [])
 }
 const drawCartItens = (productList) => {
     const template = document.querySelector("#temp-row");
@@ -35,12 +35,12 @@ const drawCartItens = (productList) => {
         cartItem.querySelector(".imageColumn a").href = item.product.imageUrl;
         cartItem.querySelector(".descriptionColumn .itemName").textContent = item.product.productName;
         cartItem.querySelector(".descriptionColumn .itemNumber").textContent = item.amount;
-        cartItem.querySelector(".totalColumn.delete .expandoHeight .price").textContent = Math.round(item.product.price * item.amount ) ;;
+        cartItem.querySelector(".totalColumn.delete .expandoHeight .price").textContent = Math.round(item.product.price * item.amount);;
         cartItem.querySelector(".totalColumn .expandoHeight .DeleteButton").addEventListener("click", (e) => { deleteFromCart(item.product) })
         tableBody.appendChild(cartItem);
     })
 }
-const deleteFromCart =(product) => {
+const deleteFromCart = (product) => {
     cart = JSON.parse(sessionStorage.getItem("cart")) || []
     currentproduct = cart.find(item => item.product.productId == product.productId)
     if (currentproduct)
@@ -53,7 +53,7 @@ const deleteFromCart =(product) => {
     setTextQuantityAndTotalPrice()
     getCartItens();
 }
-const getTodaysDate=()=>{
+const getTodaysDate = () => {
     const today = new Date();
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, '0');
@@ -64,12 +64,12 @@ const checkUserAuthentication = () => {
     const userId = sessionStorage.getItem("UserId");
     if (!userId) {
         alert("You must log in or sign up");
-        window.location.href = "home.html";  
-        return false;  
+        window.location.href = "home.html";
+        return false;
     }
-    return userId;  
+    return userId;
 };
-const getOrderDetails=()=>{
+const getOrderDetails = () => {
     if (!checkUserAuthentication()) return null;
     const products = []
     const cart = JSON.parse(sessionStorage.getItem("cart"));
@@ -103,7 +103,7 @@ const placeOrder = async () => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body:JSON.stringify(order)
+            body: JSON.stringify(order)
         });
         if (!responsePost.ok)
             alert("Eror,please try again")

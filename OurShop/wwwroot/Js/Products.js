@@ -1,8 +1,5 @@
 let categoryIds = [];
 let quantity = 0;
-let desc = ""; 
-let minPrice = 0; 
-let maxPrice = 0;
 window.addEventListener("load", () => {
     initializePage();
 });
@@ -73,7 +70,7 @@ const getCategories = async () => {
 const drawProducts = (productList) => {
     const tempCard = document.querySelector("template#temp-card")
     const productContainer = document.querySelector("#ProductList")
-    productContainer.innerHTML=""
+    productContainer.innerHTML = ""
     productList.forEach(product => {
         const clone = tempCard.content.cloneNode(true);
         clone.querySelector(".img-w").querySelector("img").src = `../${product.imageUrl}`
@@ -81,7 +78,7 @@ const drawProducts = (productList) => {
         clone.querySelector(".price").textContent = product.price
         clone.querySelector("p > button").addEventListener("click", () => addToCart(product))
         productContainer.appendChild(clone)
-        
+
     })
 }
 const drawCategories = (categoryList) => {
@@ -110,17 +107,17 @@ const removeCategoryId = (categoryId) => {
 }
 
 const filterProducts = () => {
-    minPrice = document.querySelector("#minPrice").value
-    maxPrice = document.querySelector("#maxPrice").value
-    desc= document.querySelector("#nameSearch").value
-    getProducts(categoryIds,desc,minPrice,maxPrice);
+    const minPrice = document.querySelector("#minPrice").value
+    const maxPrice = document.querySelector("#maxPrice").value
+    const desc = document.querySelector("#nameSearch").value
+    getProducts(categoryIds, desc, minPrice, maxPrice);
 }
 
 const addToCart = (product) => {
-    cart = JSON.parse(sessionStorage.getItem("cart"))||[]
+    cart = JSON.parse(sessionStorage.getItem("cart")) || []
     currentproduct = cart.find(item => item.product.productId == product.productId)
-    currentproduct ? currentproduct.amount = currentproduct.amount+=1 :
-         cart.push({ product: product,amount:1 })
+    currentproduct ? currentproduct.amount = currentproduct.amount += 1 :
+        cart.push({ product: product, amount: 1 })
     sessionStorage.setItem("cart", JSON.stringify(cart));
     quantity += 1
     setTextBagSum()
@@ -130,6 +127,6 @@ const setBagSum = () => {
     quantity = cart.reduce((sum, item) => sum + item.amount, 0);
     setTextBagSum()
 }
-    const setTextBagSum = () => {
-        document.querySelector("#ItemsCountText").textContent = quantity  
-    }
+const setTextBagSum = () => {
+    document.querySelector("#ItemsCountText").textContent = quantity
+}
