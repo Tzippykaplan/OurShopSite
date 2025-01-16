@@ -1,16 +1,20 @@
 ﻿
-const getDataFromDocument = () => {
-    const firstName = document.querySelector("#firstName").value;
-    const lastName = document.querySelector("#lastName").value;
-    const email = document.querySelector("#email").value;
-    const password = document.querySelector("#password").value;
-    return { firstName, lastName, email, password }
-}
+const API_URL = '/api/users';
 
+const getDataFromDocument = (divId) => {
+    const div = document.getElementById(divId);  
+    const inputs = div.querySelectorAll('input'); 
+    const formData = {};
+    inputs.forEach(input => {
+        formData[input.id] = input.value; 
+    });
+
+    return formData;
+}
 const createUser = async () => {
-    const user = getDataFromDocument();
+    const user = getDataFromDocument('sign');
     try {
-        const responsePost = await fetch('api/users', {
+        const responsePost = await fetch( API_URL , {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -21,37 +25,28 @@ const createUser = async () => {
            
             alert("Error,plese try again")}
         else {
-            const dataPost = await responsePost.json();
-            alert(`User ${dataPost.firstName} created!`)
+            const createdUser = await responsePost.json();
+            alert(`User ${createdUser.firstName} created successfully!`);
         }
         checkPasswordStrength(user.password)
        
     }
     catch (error) {
-        console.log(error)
+        console.error('Error creating user:', error);
+        alert("An error occurred while creating the user.");
     }
 }
 
-const show = () => {
-    const signUpDiv = document.getElementById("sign")
-    signUpDiv.className = "show"
+const showSignUp = () => {
+    const signUpDiv = document.getElementById("sign");
+    signUpDiv.className = "show";
 }
 
-const showUpdate = () => {
-    const updatepDiv = document.getElementById("update")
-    updatepDiv.className = "show"
-}
-
-const getDataFromLogin = () => {
-    const email = document.querySelector("#emailLogin").value;
-    const password = document.querySelector("#passwordLogin").value;
-    return { email, password }
-}
 
 const login = async () => {
-    const data = getDataFromLogin();
+    const data = getDataFromDocument('login');
     try {
-        const responsePost = await fetch(`api/Users/login/?email=${data.email}&password=${data.password}`, {
+        const responsePost = await fetch(`${API_URL}/login/?email=${data.emailLogin}&password=${data.passwordLogin}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -66,12 +61,12 @@ const login = async () => {
         if (!responsePost.ok) 
         alert("Eror,please try again")
         else {
-            const dataPost = await responsePost.json();
+            const userData = await responsePost.json();
             
-        sessionStorage.setItem("UserId", dataPost.userId)
-        sessionStorage.setItem("userName", dataPost.firstName)
-         alert(`${dataPost.firstName} login `)
-         window.location.href = "details.html"
+            sessionStorage.setItem("UserId", userData.userId)
+            sessionStorage.setItem("userName", userData.firstName)
+            alert(`${userData.firstName} login `)
+         window.location.href = "Products.html"
         }
     }
     catch (error) {
@@ -83,7 +78,7 @@ const updateUser = async () => {
     const user = getDataFromDocument();
     try {
         const UserId = sessionStorage.getItem("UserId")
-        const responsePut = await fetch(`api/users/${UserId}`, {
+        const responsePut = await fetch(`${API_URL }/${UserId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -104,7 +99,7 @@ const updateUser = async () => {
 }
 const  checkPasswordStrength = async ( password) => {
     try {
-        const passwordStrength = await fetch(`api/Users/passwordStrength?password=${password}`, {
+        const passwordStrength = await fetch(`${API_URL}/passwordStrength?password=${password}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -112,8 +107,8 @@ const  checkPasswordStrength = async ( password) => {
             query: {
                 password: password
             }
-        }
-      const p = await passwordStrength.json()
+        });
+        const p = await passwordStrength.json();
         return p;
  
        
@@ -125,7 +120,6 @@ const  checkPasswordStrength = async ( password) => {
 const fillProgress = async ()=>{
     const progress = document.getElementById("progress")
     const password = document.getElementById("password").value
-    console.log(password)
     const passwordStrength = await checkPasswordStrength(password);
     progress.value = passwordStrength;
    

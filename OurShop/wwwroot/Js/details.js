@@ -1,4 +1,5 @@
-﻿const welcomeText = () => {
+﻿const API_URL = '/api/users';
+const welcomeText = () => {
     const welcomeText = document.getElementById("welcome")
     welcomeText.textContent = `Hi ${sessionStorage.getItem("userName")},you'v connected successfuly! lets dive in...`
 }
@@ -16,7 +17,7 @@ const showUpdate = async() => {
     updatepDiv.className = "show"
     try {
         const UserId = sessionStorage.getItem("UserId")
-        const responseGet = await fetch(`api/users/${UserId}`, {
+        const responseGet = await fetch(`${API_URL}/${UserId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -40,15 +41,15 @@ const updateUser = async () => {
 
     try {
         const UserId = sessionStorage.getItem("UserId")
-        const responsePut = await fetch(`api/users/${UserId}`, {
+        const responsePut = await fetch(`${API_URL}/${UserId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(user)
         });
-        //if (responsePut.status == 204) 
-        // alert("User nor found")
+        if (responsePut.status == 204) 
+         alert("User nor found")
         if (responsePut.ok) {
             const dataPut = await responsePut.json(); 
             alert(`User ${dataPut.firstName} updated successfully`);

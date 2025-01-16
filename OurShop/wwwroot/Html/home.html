@@ -1,18 +1,20 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
- <script defer src="../Js/home.js"></script>
+ <script  src="../Js/home.js"></script>
   <link rel="stylesheet" href="../Style.css" type="text/css" />
   <meta charset="utf-8" />
    <title></title>
 </head>
 <body>
-
-    <input id="emailLogin" type="email" placeholder="email" required />
-    <input id="passwordLogin" type="password" placeholder="password" maxlength="15" required />
-    <button onclick="login()">login </button>
-    <button onclick="show()">add new user </button>
+    <div id="login">
+        <input id="emailLogin" type="email" placeholder="email" required />
+        <input id="passwordLogin" type="password" placeholder="password" maxlength="15" required />
+        <button onclick="login()">login </button>
+        <button onclick="showSignUp()">add new user </button>
+    </div>
     <div id="sign" class="hide">
+        
         <input id="firstName" type="text" placeholder="first name" required />
         <input id="lastName" type="text" placeholder="last name" required />
         <input id="email" type="email" placeholder="email" required />
@@ -20,6 +22,6 @@
         <progress id="progress" max="4" value="0"></progress>
         <button onclick="createUser()">sign in </button>
     </div>
-
+  
 </body>
 </html>

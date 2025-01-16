@@ -1,27 +1,30 @@
-
-window.addEventListener("load", loadPage=()=>{
+let categoryIds = [];
+let quantity = 0;
+let desc = ""; 
+let minPrice = 0; 
+let maxPrice = 0;
+window.addEventListener("load", () => {
+    initializePage();
+});
+const initializePage = () => {
     getProducts();
     getCategories();
+    handleShoppingBag();
+}
+const handleShoppingBag = () => {
     const UrlParams = new URLSearchParams(window.location.search);
     const fromShoppingBag = UrlParams.get("fromShoppingBag")
     if (fromShoppingBag === "1") {
         setBagSum();
     }
     else {
-         setTextBagSum()
+        setTextBagSum()
     }
-   
 }
-);
-const getProducts = async (categoryIds = null, desc = null, minPrice = null, maxPrice = null) => {
 
-    const params = new URLSearchParams();
-    if (desc) params.append("desc", desc);
-    if (minPrice) params.append("minPrice", minPrice);
-    if (maxPrice) params.append("maxPrice", maxPrice);
-    if (categoryIds && categoryIds.length > 0) {
-        categoryIds.forEach(id => params.append("categoryIds", id));
-    }
+const getProducts = async (categoryIds = [], desc = "", minPrice = 0, maxPrice = 0) => {
+
+    const params = buildSearchParams(categoryIds, desc, minPrice, maxPrice);
     try {
         const responseGet = await fetch(`/api/Products?${params}`, {
             method: 'GET',
@@ -39,7 +42,14 @@ const getProducts = async (categoryIds = null, desc = null, minPrice = null, max
         console.log(error)
     }
 }
-
+const buildSearchParams = (categoryIds, desc, minPrice, maxPrice) => {
+    const params = new URLSearchParams();
+    if (desc) params.append("desc", desc);
+    if (minPrice) params.append("minPrice", minPrice);
+    if (maxPrice) params.append("maxPrice", maxPrice);
+    categoryIds.forEach(id => params.append("categoryIds", id));
+    return params;
+}
 const getCategories = async () => {
     try {
         const responseGet = await fetch(`/api/Categories/`, {
@@ -64,7 +74,6 @@ const drawProducts = (productList) => {
     const tempCard = document.querySelector("template#temp-card")
     const productContainer = document.querySelector("#ProductList")
     productContainer.innerHTML=""
-    console.log(productList)
     productList.forEach(product => {
         const clone = tempCard.content.cloneNode(true);
         clone.querySelector(".img-w").querySelector("img").src = `../${product.imageUrl}`
@@ -78,7 +87,6 @@ const drawProducts = (productList) => {
 const drawCategories = (categoryList) => {
     const tempCategory = document.querySelector("template#temp-category")
     const categoryContainer = document.querySelector("#categoryList")
-    console.log(categoryList)
     categoryList.forEach(category => {
         const categoryItem = tempCategory.content.cloneNode(true);
         categoryItem.querySelector(".opt").addEventListener("change", (e) => {
@@ -90,18 +98,14 @@ const drawCategories = (categoryList) => {
     })
 }
 
-let categoryIds = [];
-let desc = "";
-let minPrice = 0;
-let maxPrice = 0
 const addCategoryId = (categoryId) => {
     categoryIds.push(categoryId);
-    getProducts(categoryIds, desc, minPrice, maxPrice);
+    filterProducts();
 }
 
 const removeCategoryId = (categoryId) => {
     categoryIds = categoryIds.filter(category => category != categoryId)
-    getProducts(categoryIds, desc, minPrice, maxPrice);
+    filterProducts();
 
 }
 
@@ -109,10 +113,9 @@ const filterProducts = () => {
     minPrice = document.querySelector("#minPrice").value
     maxPrice = document.querySelector("#maxPrice").value
     desc= document.querySelector("#nameSearch").value
-    console.log(desc)
     getProducts(categoryIds,desc,minPrice,maxPrice);
 }
-let quantity = 0
+
 const addToCart = (product) => {
     cart = JSON.parse(sessionStorage.getItem("cart"))||[]
     currentproduct = cart.find(item => item.product.productId == product.productId)
@@ -124,9 +127,7 @@ const addToCart = (product) => {
 }
 const setBagSum = () => {
     const cart = JSON.parse(sessionStorage.getItem("cart") || "[]")
-    cart.forEach(item => {
-        quantity += item.amount
-    })
+    quantity = cart.reduce((sum, item) => sum + item.amount, 0);
     setTextBagSum()
 }
     const setTextBagSum = () => {
