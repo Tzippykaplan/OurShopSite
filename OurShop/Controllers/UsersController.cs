@@ -72,10 +72,10 @@ namespace OurShop.Controllers
 
         {
             User checkUser = await _userService.loginUser(email, password);
-            if (checkUser != null)
+            //if (checkUser != null)
                 return Ok(_mapper.Map<User, returnLoginUserDto>(checkUser));
-            else
-                return NotFound();
+            //else
+            //    return NotFound();
 
 
         }

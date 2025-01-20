@@ -61,8 +61,7 @@ const login = async () => {
         if (!responsePost.ok) 
         alert("Eror,please try again")
         else {
-            const userData = await responsePost.json();
-            
+            const userData = await responsePost.json(); 
             sessionStorage.setItem("UserId", userData.userId)
             sessionStorage.setItem("userName", userData.firstName)
             alert(`${userData.firstName} login `)

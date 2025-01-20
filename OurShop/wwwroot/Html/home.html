@@ -2,23 +2,23 @@
 <html>
 <head>
  <script  src="../Js/home.js"></script>
-  <link rel="stylesheet" href="../Style.css" type="text/css" />
+  <link rel="stylesheet" href="../Css/Home.css" type="text/css" />
   <meta charset="utf-8" />
-   <title></title>
+  <title>התחברות</title>
 </head>
-<body>
-    <div id="login">
-        <input id="emailLogin" type="email" placeholder="email" required />
-        <input id="passwordLogin" type="password" placeholder="password" maxlength="15" required />
-        <button onclick="login()">login </button>
-        <button onclick="showSignUp()">add new user </button>
+<body class="login-background">
+    <div id="login" class="login-container"">
+        <input id="emailLogin" type="email" placeholder="דואר אלקטרוני" required />
+        <input id="passwordLogin" type="password" placeholder="סיסמא" maxlength="15" required />
+        <button onclick="login()">התחברות </button>
+        <button onclick="showSignUp()">הרשמה </button>
     </div>
     <div id="sign" class="hide">
         
-        <input id="firstName" type="text" placeholder="first name" required />
-        <input id="lastName" type="text" placeholder="last name" required />
-        <input id="email" type="email" placeholder="email" required />
-        <input id="password" type="password" placeholder="password" required onblur="fillProgress()" />
+        <input id="firstName" type="text" placeholder="שם פרטי" required />
+        <input id="lastName" type="text" placeholder="שם משפחה" required />
+        <input id="email" type="email" placeholder="דואר אלקטרוני" required />
+        <input id="password" type="password" placeholder="סיסמא" required onblur="fillProgress()" />
         <progress id="progress" max="4" value="0"></progress>
         <button onclick="createUser()">sign in </button>
     </div>

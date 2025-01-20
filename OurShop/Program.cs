@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using NLog.Web;
+using OurShop.MiddleWare;
 using Repositories;
 using Services;
 
@@ -20,11 +22,13 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IRatingService, RatingService>();
+builder.Services.AddScoped<IRatingRepository, RatingRepository>();
 builder.Services.AddDbContext<ShopApiContext>(options => options.UseSqlServer("Server=TZIPPY53\\SQLEXPRESS; Database=ShopApi; Trusted_Connection=True; TrustServerCertificate=True")
 );
-
+builder.Host.UseNLog();
 var app = builder.Build();
-
+app.UseHandleErrorMiddleware();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -35,8 +39,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
-
+ 
 app.UseAuthorization();
+
+app.UseRatingMiddleware();
 
 app.MapControllers();
 
