@@ -26,7 +26,7 @@ namespace Repositories
         public async Task<Order> addOrder(Order order)
         {
             await _shopContext.Orders.AddAsync(order);
-            await _shopContext.SaveChangesAsync();
+            await _shopContext.SaveChangesAsync(); //you need the new order id so res= AddAsync, order.Id= res.id....
             return (order);
         }
     }

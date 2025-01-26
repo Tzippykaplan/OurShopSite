@@ -23,7 +23,7 @@ const setTextQuantityAndTotalPrice = () => {
 const getCartItens = () => {
     drawCartItens(JSON.parse(sessionStorage.getItem("cart")) || [])
 }
-const drawCartItens = (productList) => {
+const drawCartItens = (productList) => {// divide this func to draw and drawOne
     const template = document.querySelector("#temp-row");
     const tableBody = document.querySelector("#items tbody")
     tableBody.innerHTML = ""
