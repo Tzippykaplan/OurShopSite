@@ -62,7 +62,7 @@ namespace TestsProject
 
         //    var user = new User
         //    {
-        //        FirstName = "aa",
+        //        FirstName = "aab",
         //        LastName = "bb",
         //        Email = "Tz@123cvv",
         //        Password = "Rzfdsxf!@2"
@@ -77,15 +77,16 @@ namespace TestsProject
         //        Email = "Tz@123cvv",
         //        Password = "newPassword123!"
         //    };
-        //    await repository.updateUser(DbUser.UserId, updatedUser);
+        //   var currentuser= await repository.getUserById(DbUser.UserId);
 
-        //    var retrievedUser = await repository.getUserById(DbUser.UserId);
-
+           
         //    Assert.NotNull(retrievedUser);
         //    Assert.Equal(updatedUser.FirstName, retrievedUser.FirstName);
         //    Assert.Equal(updatedUser.LastName, retrievedUser.LastName);
         //    Assert.Equal(updatedUser.Password, retrievedUser.Password);
-        //}
+
+        //    _DBFixture.Dispose();
+        }
 
 
     }
