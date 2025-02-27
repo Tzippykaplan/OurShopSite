@@ -3,6 +3,7 @@
 <head>
     <script defer src="../Js/details.js"></script>
     <link rel="stylesheet" href="../Style.css" type="text/css" />
+    <link rel="stylesheet" href="../Css/deatails.css" type="text/css" />
     <meta charset="utf-8" />
     <title></title>
 </head>
@@ -14,7 +15,8 @@
         <input id="firstName" type="text" placeholder="first name" required />
         <input id="lastName" type="text" placeholder="last name" required />
         <input id="email" type="email" placeholder="email" required />
-        <input id="password" type="password" placeholder="password" maxlength="15" required />
+        <input id="password" type="password" placeholder="password" maxlength="15" required onblur="fillProgress()" />
+        <progress id="progress" max="4" value="0"></progress>
         <button onclick="updateUser()"> update </button>
     </div>
 </body>

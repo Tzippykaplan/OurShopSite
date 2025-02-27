@@ -1,0 +1,64 @@
+﻿body {
+    background-image: url('../Public/restaurant.jpeg');
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+    padding: 0;
+    font-family: system-ui;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: white;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+button {
+    background-color: #1a6461;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    margin-bottom: 10px;
+}
+
+    button:hover {
+        background-color: #145a54;
+    }
+
+#update {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    width: 40%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+}
+
+    #update input {
+        width: 80%;
+        padding: 10px;
+        margin: 10px auto;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        display: block;
+    }
+
+    #update button {
+        width: 50%;
+        display: block;
+        margin: 10px auto;
+    }
+
+.hide {
+    display: none;
+}
