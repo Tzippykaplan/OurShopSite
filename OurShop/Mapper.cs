@@ -9,10 +9,10 @@ namespace OurShop
         {
             CreateMap<Product, ProductDto>();
             CreateMap<User, UserByIdDto>();
-            CreateMap<addUserDto,User>();
+            CreateMap<AddUserDto,User>();
             CreateMap<UserByIdDto, User>();
-            CreateMap<addUserDto,returnPostUserDto>();
-            CreateMap<User, returnLoginUserDto>();
+            CreateMap<AddUserDto,ReturnPostUserDto>();
+            CreateMap<User, ReturnLoginUserDto>();
             CreateMap<Category, getCategoryDto>();
             CreateMap<OrderItem, OrderItemDto>();
             CreateMap<OrderItemDto,OrderItem > ();

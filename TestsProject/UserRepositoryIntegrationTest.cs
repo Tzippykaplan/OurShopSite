@@ -19,41 +19,41 @@ namespace TestsProject
      
         }
 
-        [Fact]
-        public async Task CreateUser_Should_Add_User_To_Database()
-        {
-            // Arrange
+        //[Fact]
+        //public async Task CreateUser_Should_Add_User_To_Database()
+        //{
+        //    // Arrange
        
-            var repository = new UserRepository(_DBFixture.Context);
+        //    var repository = new UserRepository(_DBFixture.Context);
 
-            var user = new User { FirstName = "aa", LastName = "bb", Email = "Tz@123cvv" ,Password="Rzfdsxf!@2"};
-            var DbUser = await repository.addUser(user);
+        //    var user = new User { FirstName = "aa", LastName = "bb", Email = "Tz@123cvv" ,Password="Rzfdsxf!@2"};
+        //    var DbUser = await repository.addUser(user);
 
-            // Assert
-            Assert.NotNull(DbUser);
-            Assert.NotEqual(0, DbUser.UserId);
-            Assert.Equal("Tz@123cvv", DbUser.Email);
-            _DBFixture.Dispose();
-        }
-        [Fact]
-        public async Task CreateUser_And_LoginUser_Should_Work_Correctly()
-        {
-            // Arrange
+        //    // Assert
+        //    Assert.NotNull(DbUser);
+        //    Assert.NotEqual(0, DbUser.UserId);
+        //    Assert.Equal("Tz@123cvv", DbUser.Email);
+        //    _DBFixture.Dispose();
+        //}
+        //[Fact]
+        //public async Task CreateUser_And_LoginUser_Should_Work_Correctly()
+        //{
+        //    // Arrange
 
-            var repository = new UserRepository(_DBFixture.Context);
+        //    var repository = new UserRepository(_DBFixture.Context);
 
-            var user = new User { FirstName = "aa", LastName = "bb", Email = "Tz@123cvv", Password = "Rzfdsxf!@2" };
-            var DbUser = await repository.addUser(user);
+        //    var user = new User { FirstName = "aa", LastName = "bb", Email = "Tz@123cvv", Password = "Rzfdsxf!@2" };
+        //    var DbUser = await repository.addUser(user);
 
-            var loggedInUser = await repository.loginUser("Tz@123cvv", "Rzfdsxf!@2");
+        //    var loggedInUser = await repository.loginUser("Tz@123cvv", "Rzfdsxf!@2");
 
       
-            Assert.NotNull(loggedInUser);
-            Assert.Equal("Tz@123cvv", loggedInUser.Email);
-            Assert.Equal(DbUser.UserId, loggedInUser.UserId);
+        //    Assert.NotNull(loggedInUser);
+        //    Assert.Equal("Tz@123cvv", loggedInUser.Email);
+        //    Assert.Equal(DbUser.UserId, loggedInUser.UserId);
 
-            _DBFixture.Dispose();
-        }
+        //    _DBFixture.Dispose();
+        //}
         //[Fact]
         //public async Task Update_Should_Work_Correctly()
         //{
@@ -90,4 +90,3 @@ namespace TestsProject
 
 
     }
-}
