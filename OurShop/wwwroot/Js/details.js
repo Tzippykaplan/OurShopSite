@@ -37,27 +37,63 @@ const showUpdate = async() => {
 
 const updateUser = async () => {
     const user = getDataFromDocument();
+    const passWordStrength = await checkPasswordStrength(user.password)
+    if (passWordStrength > 3) {
+        try {
+            const UserId = sessionStorage.getItem("UserId")
+            const responsePut = await fetch(`${API_URL}/${UserId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            });
+            if (responsePut.status == 204)
+                alert("User nor found")
+            if (responsePut.ok) {
+                sessionStorage.setItem("userName", user.firstName)
+                welcomeText();
+                alert(`User updated successfully`);
 
+            }
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
+    else
+    alert("password is weak");
 
+}
+const fillProgress = async () => {
+    const progress = document.getElementById("progress")
+    const password = document.getElementById("password").value
+    if (!password) {
+        progress.value = 0;
+        return;
+    }
+    const passwordStrength = await checkPasswordStrength(password);
+    progress.value = passwordStrength;
+
+}
+const checkPasswordStrength = async (password) => {
     try {
-        const UserId = sessionStorage.getItem("UserId")
-        const responsePut = await fetch(`${API_URL}/${UserId}`, {
-            method: 'PUT',
+        const passwordStrength = await fetch(`${API_URL}/passwordStrength?password=${password}`, {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(user)
+            query: {
+                password: password
+            }
         });
-        if (responsePut.status == 204) 
-         alert("User nor found")
-        if (responsePut.ok) {
-            const dataPut = await responsePut.json(); 
-            alert(`User ${dataPut.firstName} updated successfully`);
-        }
+        const p = await passwordStrength.json();
+        return p;
+
+
     }
     catch (error) {
         console.log(error)
     }
 }
-
  

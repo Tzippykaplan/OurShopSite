@@ -130,7 +130,7 @@ const setBagSum = () => {
 const setTextBagSum = () => {
     document.querySelector("#ItemsCountText").textContent = quantity
 }
-const AccountDetails()
+const AccountDetails=()=>
 {
-    window.location.href = "details.html"    
+    window.location.href = "details.html"   
 }
