@@ -21,7 +21,11 @@ const createUser = async () => {
             },
             body: JSON.stringify(user)
         });
-        if (!responsePost.ok) { 
+        if (responsePost.status==409) {
+
+            alert("user name already exixst")
+        }
+        else if (!responsePost.ok) { 
            
             alert("Error,plese try again")}
         else {
@@ -84,6 +88,7 @@ const updateUser = async () => {
             },
             body: JSON.stringify(user)
         });
+
         if (!responsePut.ok)
             alert("Eror,please try again")
         else {
@@ -119,6 +124,10 @@ const  checkPasswordStrength = async ( password) => {
 const fillProgress = async ()=>{
     const progress = document.getElementById("progress")
     const password = document.getElementById("password").value
+    if (!password) {
+        progress.value = 0;
+        return;
+    }
     const passwordStrength = await checkPasswordStrength(password);
     progress.value = passwordStrength;
    

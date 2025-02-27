@@ -37,14 +37,17 @@ namespace OurShop.Controllers
 
         // POST api/<UsersController>
         [HttpPost]
-        public async Task<ActionResult<User>> Post([FromBody] addUserDto user)
+        public async Task<ActionResult<User>> Post([FromBody] AddUserDto user)
         {
             try
             {
-                User ParsedUser = _mapper.Map<addUserDto, User>(user);
-                await _userService.AddUser(ParsedUser);
-                
-                return CreatedAtAction(nameof(Get), new { id = ParsedUser.UserId }, _mapper.Map<addUserDto, returnPostUserDto>(user));
+                User ParsedUser = _mapper.Map<AddUserDto, User>(user);
+               User newUser= await _userService.AddUser(ParsedUser);
+               if(newUser==null)
+               {
+                    return Conflict();
+               }
+                return CreatedAtAction(nameof(Get), new { id = ParsedUser.UserId }, _mapper.Map<AddUserDto, ReturnPostUserDto>(user));
             }
             catch (Exception e)
             {
@@ -53,11 +56,11 @@ namespace OurShop.Controllers
 
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] addUserDto userToUpdate)
+        public async Task<IActionResult> Put(int id, [FromBody] AddUserDto userToUpdate)
         {
             try
             {
-                await _userService.updateUser(id, _mapper.Map<addUserDto,User>(userToUpdate));
+                await _userService.updateUser(id, _mapper.Map<AddUserDto, User>(userToUpdate));
 
             }
             catch (Exception e)
@@ -73,7 +76,7 @@ namespace OurShop.Controllers
         {
             User checkUser = await _userService.loginUser(email, password);
             //if (checkUser != null)
-                return Ok(_mapper.Map<User, returnLoginUserDto>(checkUser));
+                return Ok(_mapper.Map<User, ReturnLoginUserDto>(checkUser));
             //else
             //    return NotFound();
 

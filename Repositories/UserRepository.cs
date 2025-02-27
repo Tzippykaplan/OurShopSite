@@ -30,6 +30,11 @@ namespace Repositories
         }
         public async Task<User> addUser(User user)
         {
+            bool b = await _shopContext.Users.AnyAsync(currentUser => currentUser.Email == user.Email);
+            if (b)
+            {
+                return null;
+            }
             await _shopContext.Users.AddAsync(user);
             await _shopContext.SaveChangesAsync();
             return (user);

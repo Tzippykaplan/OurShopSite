@@ -24,7 +24,8 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IRatingService, RatingService>();
 builder.Services.AddScoped<IRatingRepository, RatingRepository>();
-builder.Services.AddDbContext<ShopApiContext>(options => options.UseSqlServer("Server=TZIPPY53\\SQLEXPRESS; Database=ShopApimm; Trusted_Connection=True; TrustServerCertificate=True")
+var connectionString = builder.Configuration.GetConnectionString("Home");
+builder.Services.AddDbContext<ShopApiContext>(options => options.UseSqlServer(connectionString)
 );
 builder.Host.UseNLog();
 var app = builder.Build();
