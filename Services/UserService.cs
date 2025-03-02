@@ -35,7 +35,7 @@ namespace Services
         {
             return await _userRepository.loginUser(email, password);
         }
-        public Task updateUser(int id, User userToUpdate)
+        public Task<User> updateUser(int id, User userToUpdate)
         {
             return _userRepository.updateUser(id, userToUpdate);
         }

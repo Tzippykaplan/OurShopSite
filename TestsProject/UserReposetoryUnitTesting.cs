@@ -1,6 +1,7 @@
 namespace TestsProject;
 
 using Entities;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using Moq.EntityFrameworkCore;
 using Repositories;
@@ -45,5 +46,23 @@ public class UserReposetoryUnitTesting
         var result = await userRepository.loginUser(user.Email, "wrongpassword");
 
         Assert.Null(result);
+    }
+    [Fact]
+    public async Task UpdateUser_ExistingUser_UpdatesUser()
+    {
+        var user = new User { UserId = 20, FirstName = "nnn", LastName = "bbb" };
+        var mockContext = new Mock<ShopApiContext>();
+        mockContext.Setup(x => x.Users).ReturnsDbSet(new List<User>() { user });
+        mockContext.Setup(x => x.SaveChangesAsync(default)).ReturnsAsync(1);
+        mockContext.Setup(x => x.Users.FindAsync(20)).ReturnsAsync(user);
+
+        var userRepository = new UserRepository(mockContext.Object);
+        var updatedUser = new User { FirstName = "updated", LastName = "user" };
+
+        user=await userRepository.updateUser(20, updatedUser);
+
+        Assert.Equal("updated", user.FirstName);
+        Assert.Equal("user", user.LastName);
+        mockContext.Verify(x => x.SaveChangesAsync(default), Times.Once);
     }
 }

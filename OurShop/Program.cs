@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using NLog;
 using NLog.Web;
 using OurShop.MiddleWare;
 using Repositories;
@@ -6,8 +7,9 @@ using Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
+var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+logger.Error("NLog is working!");
+builder.Host.UseNLog();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -27,10 +29,9 @@ builder.Services.AddScoped<IRatingRepository, RatingRepository>();
 var connectionString = builder.Configuration.GetConnectionString("Home");
 builder.Services.AddDbContext<ShopApiContext>(options => options.UseSqlServer(connectionString)
 );
-builder.Host.UseNLog();
+//builder.Host.UseNLog();
 var app = builder.Build();
 app.UseHandleErrorMiddleware();
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

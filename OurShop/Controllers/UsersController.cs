@@ -56,18 +56,19 @@ namespace OurShop.Controllers
 
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] AddUserDto userToUpdate)
+        public async Task<ActionResult<User>> Put(int id, [FromBody] AddUserDto userToUpdate)
         {
             try
             {
-                await _userService.updateUser(id, _mapper.Map<AddUserDto, User>(userToUpdate));
-
+              User uppdatedUser=  await _userService.updateUser(id, _mapper.Map<AddUserDto, User>(userToUpdate));
+             return Ok(uppdatedUser);
             }
             catch (Exception e)
             {
                 return BadRequest();
             }
-            return Ok();
+           
+
 
         }
         [HttpPost("login")]
