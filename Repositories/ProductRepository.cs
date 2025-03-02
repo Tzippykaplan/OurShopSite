@@ -32,11 +32,13 @@ namespace Repositories
             Console.WriteLine(query.ToQueryString());
             List<Product> products = await query.ToListAsync();
             return products;
-            ////List<Product> product = await myShop.Products.Include(c => c.Category).ToListAsync();
-            ////return product;
+           
+        }
+        public async Task<Product?> getById(int id)
+        {
+            return await  _shopContext.Products.FirstOrDefaultAsync(p => p.ProductId == id);
 
-            //List<Product> allProducts = await _shopContext.Products.Include(p => p.Category).ToListAsync();
-            //return allProducts;
+
         }
 
 
