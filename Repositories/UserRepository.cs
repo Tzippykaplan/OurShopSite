@@ -44,11 +44,12 @@ namespace Repositories
             return await _shopContext.Users.FirstOrDefaultAsync(user => user.Email == email && user.Password == password);
              
         }
-        public async Task updateUser(int id, User newUser)
+        public async Task<User> updateUser(int id, User newUser)
         {
             newUser.UserId = id;
             _shopContext.Update(newUser);
             await _shopContext.SaveChangesAsync();
+            return newUser;
 
 
         }
