@@ -7,10 +7,23 @@ using Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
-var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
-logger.Error("NLog is working!");
-builder.Host.UseNLog();
-builder.Services.AddEndpointsApiExplorer();
+string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+string connectionString;
+
+if (environment == "Home")
+{
+    connectionString = builder.Configuration.GetConnectionString("Home");
+}
+else if (environment == "School")
+{
+    connectionString = builder.Configuration.GetConnectionString("School");
+}
+else
+{
+    throw new Exception("Unknown environment");
+}
+//builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -26,10 +39,9 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IRatingService, RatingService>();
 builder.Services.AddScoped<IRatingRepository, RatingRepository>();
-var connectionString = builder.Configuration.GetConnectionString("Home");
-builder.Services.AddDbContext<ShopApiContext>(options => options.UseSqlServer(connectionString)
-);
-//builder.Host.UseNLog();
+builder.Services.AddDbContext<ShopApiContext>(options => options.UseSqlServer(connectionString));
+builder.Host.UseNLog();
+builder.Services.AddMemoryCache();
 var app = builder.Build();
 app.UseHandleErrorMiddleware();
 if (app.Environment.IsDevelopment())

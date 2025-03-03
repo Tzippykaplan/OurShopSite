@@ -9,8 +9,9 @@
 </head>
 <body>
 
-    <h1 id=welcome ></h1>
+    <h1 id=welcome></h1>
     <button onclick="showUpdate()"> show</button>
+    <button onclick="goTOProducts()"> back to producrs page </button>
     <div id="update" class="hide">
         <input id="firstName" type="text" placeholder="first name" required />
         <input id="lastName" type="text" placeholder="last name" required />
@@ -18,6 +19,7 @@
         <input id="password" type="password" placeholder="password" maxlength="15" required onblur="fillProgress()" />
         <progress id="progress" max="4" value="0"></progress>
         <button onclick="updateUser()"> update </button>
+
     </div>
 </body>
 </html>

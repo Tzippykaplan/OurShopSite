@@ -96,4 +96,7 @@ const checkPasswordStrength = async (password) => {
         console.log(error)
     }
 }
+const goTOProducts=() => {
+    window.location.href = "Products.html"
+}
  
