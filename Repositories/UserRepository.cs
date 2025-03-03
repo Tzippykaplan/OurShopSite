@@ -46,11 +46,19 @@ namespace Repositories
         }
         public async Task<User> updateUser(int id, User newUser)
         {
-            newUser.UserId = id;
-            _shopContext.Update(newUser);
-            await _shopContext.SaveChangesAsync();
-            return newUser;
+            var existingUser = await _shopContext.Users.FindAsync(id);
+            if (existingUser == null)
+            {
+                return null;
+            }
 
+            existingUser.FirstName = newUser.FirstName;
+            existingUser.LastName = newUser.LastName;
+            existingUser.Email = newUser.Email;
+            existingUser.Password = newUser.Password;
+
+            await _shopContext.SaveChangesAsync();
+            return existingUser;
 
         }
 

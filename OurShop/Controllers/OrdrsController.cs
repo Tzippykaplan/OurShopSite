@@ -33,13 +33,14 @@ namespace OurShop.Controllers
         {
             try
             {
-                await _OrderService.addOrder(_mapper.Map<OrderPostDto, Order>(order));
+                Order returnedOrder = await _OrderService.addOrder(_mapper.Map<OrderPostDto, Order>(order));
+                return CreatedAtAction(nameof(getOrderById), new { id = order.userId }, _mapper.Map<Order, returnOrderDto>(returnedOrder));
             }
             catch (InvalidOrderException ex)
             {
                 return BadRequest(new { error = ex.Message });
             }
-            return CreatedAtAction(nameof(getOrderById), new { id = order.userId }, _mapper.Map<OrderPostDto, returnOrderDto>(order));
+           
         }
 
 

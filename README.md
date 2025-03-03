@@ -12,12 +12,11 @@
 3. **Update Existing User Details**
 4. **User Validations**
    - Email Address validation
-   - Additional validation (to be defined)
 5. **Check Password Strength**
 
 ### Product Management
 6. **Go To Products Page**
-7. **Display all Products** (at least 20 meaningful product details)
+7. **Display all Products** 
 8. **Display Categories**
 9. **Filter by:**
    - Category
