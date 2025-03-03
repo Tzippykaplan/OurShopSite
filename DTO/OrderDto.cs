@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace DTO;
 
 public record OrderPostDto(DateOnly orderDate, int userId,int orderSum,List<OrderItemDto> OrderItems);
-public record returnOrderDto(DateOnly orderDate, int userId, List<OrderItemDto> OrderItems);
+public record returnOrderDto(int orderId,DateOnly orderDate, int userId, List<OrderItemDto> OrderItems);
 public record returnOrdersListDto( DateOnly orderDate, string orderName);
 
 

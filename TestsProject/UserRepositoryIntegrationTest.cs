@@ -1,93 +1,112 @@
 ﻿using Entities;
-using Microsoft.EntityFrameworkCore;
 using Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using TestsProject;
+using Xunit;
 
-namespace TestsProject
+namespace Test
 {
-    public class UserRepositoryIntegrationTest
+    public class UserRepositoryIntegrationTest : IClassFixture<DBFixture>
     {
-        private readonly DBFixture _DBFixture;
+        private readonly IUserRepository _userRepository;
+        public  ShopApiContext _context;
 
-        public UserRepositoryIntegrationTest()
+        public UserRepositoryIntegrationTest(DBFixture fixture)
         {
-            _DBFixture = new DBFixture();
+            _context = fixture.Context;
+            _userRepository = new UserRepository(_context);
+        }
+
+        [Fact]
+        public async Task AddUser_ValidUser_ShouldSaveToDatabase()
+        {
+            var user = new User { FirstName = "John", LastName = "Doe", Email = "jdddll@exakkm", Password = "Pass123!" };
+
+            var savedUser = await _userRepository.addUser(user);
+
+            Assert.NotNull(savedUser);
+            Assert.NotEqual(0, savedUser.UserId);
+            Assert.Equal("jdddll@exakkm", savedUser.Email);
+            _context.Dispose();
+        }
+
+        [Fact]
+        public async Task LoginUser_ValidCredentials_ReturnUser()
+        {
+            var user = new User { FirstName = "Jane", LastName = "Doe", Email = "jane@example", Password = "JanePass!12" };
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            var result = await _userRepository.loginUser(user.Email, user.Password);
+
+            Assert.NotNull(result);
+            Assert.Equal(user.Email, result.Email);
+            _context.Dispose();
 
         }
 
         [Fact]
-        public async Task CreateUser_Should_Add_User_To_Database()
+        public async Task LoginUser_InvalidCredentials_ReturnNull()
         {
-            // Arrange
+            var result = await _userRepository.loginUser("invalid@ex", "WrongPass123");
+            Assert.Null(result);
+            _context.Dispose();
 
-            var repository = new UserRepository(_DBFixture.Context);
-
-            var user = new User { FirstName = "aa", LastName = "bb", Email = "Tz@123cvv", Password = "Rzfdsxf!@2" };
-            var DbUser = await repository.addUser(user);
-
-            // Assert
-            Assert.NotNull(DbUser);
-            Assert.NotEqual(0, DbUser.UserId);
-            Assert.Equal("Tz@123cvv", DbUser.Email);
-            _DBFixture.Dispose();
         }
+
         [Fact]
-        public async Task CreateUser_And_LoginUser_Should_Work_Correctly()
+        public async Task GetUserById_ExistingUser_ReturnsUser()
         {
-            // Arrange
+            var user = new User { FirstName = "Alice", LastName = "Smith", Email = "alice@ex", Password = "Alice1234!" };
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
 
-            var repository = new UserRepository(_DBFixture.Context);
+            var foundUser = await _userRepository.getUserById(user.UserId);
 
-            var user = new User { FirstName = "aa", LastName = "bb", Email = "Tz@123cvv", Password = "Rzfdsxf!@2" };
-            var DbUser = await repository.addUser(user);
+            Assert.NotNull(foundUser);
+            Assert.Equal(user.Email, foundUser.Email);
+            _context.Dispose();
 
-            var loggedInUser = await repository.loginUser("Tz@123cvv", "Rzfdsxf!@2");
-
-
-            Assert.NotNull(loggedInUser);
-            Assert.Equal("Tz@123cvv", loggedInUser.Email);
-            Assert.Equal(DbUser.UserId, loggedInUser.UserId);
-
-            _DBFixture.Dispose();
         }
+
         [Fact]
-        public async Task Update_Should_Work_Correctly()
+        public async Task GetUserById_NonExistingUser_ReturnsNull()
         {
-            // Arrange
-            var repository = new UserRepository(_DBFixture.Context);
+            var result = await _userRepository.getUserById(9999);
+            Assert.Null(result);
+            _context.Dispose();
 
-            var user = new User
-            {
-                FirstName = "aab",
-                LastName = "bb",
-                Email = "Tz@123cvv",
-                Password = "Rzfdsxf!@2"
-            };
-
-            var DbUser = await repository.addUser(user);
-
-            var updatedUser = new User
-            {
-                FirstName = "newFirstName",
-                LastName = "newLastName",
-                Email = "Tz@123cvv",
-                Password = "newPassword123!"
-            };
-            var currentuser = await repository.getUserById(DbUser.UserId);
-
-
-            Assert.NotNull(currentuser);
-            Assert.Equal(updatedUser.FirstName, currentuser.FirstName);
-            Assert.Equal(updatedUser.LastName, currentuser.LastName);
-            Assert.Equal(updatedUser.Password, currentuser.Password);
-
-            _DBFixture.Dispose();
         }
 
+        [Fact]
+        public async Task UpdateUser_ValidUser_ShouldUpdateSuccessfully()
+        {
+            var user = new User { FirstName = "Tom", LastName = "Hanks", Email = "tolllll@ex", Password = "TomPass12!" };
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
 
+            var updatedUser = new User { FirstName = "Tommy", LastName = "Hanks", Email = "tommy@ex", Password = "NewPass@34" };
+
+            await _userRepository.updateUser(user.UserId, updatedUser);
+
+            var result = await _userRepository.getUserById(user.UserId);
+
+            Assert.NotNull(result);
+            Assert.Equal(updatedUser.FirstName, result.FirstName);
+            Assert.Equal(updatedUser.Email, result.Email);
+            _context.Dispose();
+
+        }
+
+        [Fact]
+        public async Task UpdateUser_NonExistingUser_ShouldNotThrowException()
+        {
+            var nonExistingUser = new User { FirstName = "Ghost", LastName = "User", Email = "ggggghost@ex", Password = "Ghost123!" };
+
+          var result=  await _userRepository.updateUser(90099, nonExistingUser);
+            Assert.Equal(result, null);
+            _context.Dispose();
+
+        }
     }
 }

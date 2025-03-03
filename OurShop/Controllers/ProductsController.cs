@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Services;
 using DTO;
 using Microsoft.Extensions.Caching.Memory;
-using OurShop;
 
 namespace OurShop.Controllers
 {
@@ -27,25 +26,14 @@ namespace OurShop.Controllers
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> Get(string? desc, int? minPrice, int? maxPrice, [FromQuery] int?[] categoryIds)
-        {
-            if (!_memoryCache.TryGetValue("ProductsCache", out IEnumerable<Product> products))
-            {
-
-                products = await _productService.getProducts(desc, minPrice, maxPrice, categoryIds);
-                if (products == null || !products.Any())
-                    return NotFound();
-
-                var cacheEntryOptions = new MemoryCacheEntryOptions
-                {
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30)
-                };
-
-                _memoryCache.Set("ProductsCache", products, cacheEntryOptions);
-            }
-            return Ok(_mapper.Map<IEnumerable<Product>, IEnumerable<Product>>(products));
-          
+        {   
+            List<Product> checkProduct = await _productService.getProducts(desc,minPrice,maxPrice,categoryIds);
+            if (checkProduct != null)
+                return Ok(_mapper.Map<List<Product>, List<ProductDto>>(checkProduct));
+            else
+                return NotFound();
         }
 
    
     }
-    }
+}
