@@ -1,5 +1,5 @@
 ﻿
-const API_URL = '/api/users';
+const API_URL = '/api/Users';
 
 const getDataFromDocument = (divId) => {
     const div = document.getElementById(divId);  

@@ -3,6 +3,7 @@ using DTO;
 using Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Services;
 
 namespace OurShop.Controllers
@@ -13,21 +14,36 @@ namespace OurShop.Controllers
     {
         ICategoryService _CategoryService;
         IMapper _mapper;
+        private readonly IMemoryCache _memoryCache;
 
-        public CategoriesController(ICategoryService CategoryService, IMapper mapper )
+        public CategoriesController(ICategoryService CategoryService, IMapper mapper , IMemoryCache memoryCache)
         {
             _CategoryService = CategoryService;
             _mapper = mapper;
+           _memoryCache = memoryCache;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> Get()
+        public async Task<ActionResult<IEnumerable<getCategoryDto>>> Get()
         {
-            IEnumerable<Category> checkCategory = await _CategoryService.getCategories();
-            if (checkCategory != null)
-                return Ok(_mapper.Map<IEnumerable<Category>, IEnumerable<getCategoryDto>>(checkCategory));
-            else
-                return NotFound();
+            if (!_memoryCache.TryGetValue("CategoriesCache", out IEnumerable<Category> categories))
+            {
+                categories = await _CategoryService.getCategories();
+
+                if (categories == null || !categories.Any())
+                {
+                    return NotFound();
+                }
+
+                var cacheEntryOptions = new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30)
+                };
+
+                _memoryCache.Set("CategoriesCache", categories, cacheEntryOptions);
+            }
+
+            return Ok(_mapper.Map<IEnumerable<Category>, IEnumerable<getCategoryDto>>(categories));
         }
     }
 }
