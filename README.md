@@ -29,7 +29,7 @@
 12. **Display Order Sum**
 13. **Remove Items from Cart**
 14. **Place Order**
-15. **Order Confirmation Alert** (Order ID was placed successfully)
+15. **Order Confirmation Alert** 
 
 ## Functionality & Architecture
 ### API & Documentation
@@ -38,7 +38,7 @@
 
 ### Code Practices
 - **DTO Usage**: All API responses use DTOs (Data Transfer Objects).
-- **No @JsonIgnore** used in the project.
+<!-- - **No @JsonIgnore** used in the project. -->
 
 ### Logging & Error Handling
 - **Logging**
@@ -70,7 +70,3 @@
 ## Contact & Support
 For issues, report them via the issue tracker or contact the support team.
 
----
-
-This README provides an overview of the project's key functionalities, structure,
-and setup instructions. Let me know if you need modifications!

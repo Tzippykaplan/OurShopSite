@@ -76,7 +76,7 @@ const drawProducts = (productList) => {
         clone.querySelector(".img-w").querySelector("img").src = `../${product.imageUrl}`
         clone.querySelector("h1").textContent = product.productName
         clone.querySelector(".description").textContent = product.description
-        clone.querySelector(".price").textContent = product.price
+        clone.querySelector(".price").textContent = `$${product.price}`
         clone.querySelector("p > button").addEventListener("click", () => addToCart(product))
         productContainer.appendChild(clone)
 

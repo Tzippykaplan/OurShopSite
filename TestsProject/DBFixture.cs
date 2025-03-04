@@ -1,24 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Repositories;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TestsProject
 {
-    public class DBFixture
+    public class DBFixture : IDisposable
     {
-        public ShopApiContext Context { get; set; }  
-        public DBFixture() 
+        public ShopApiContext Context { get; private set; }
+
+        public DBFixture()
         {
             var options = new DbContextOptionsBuilder<ShopApiContext>()
-                .UseSqlServer("Server=SRV2\\PUPILS;Database=TestTest;Trusted_Connection=True;TrustServerCertificate=True").Options;
+                .UseSqlServer("Server=SRV2\\PUPILS;Database=TestTest;Trusted_Connection=True;TrustServerCertificate=True")
+                .Options;
             Context = new ShopApiContext(options);
             Context.Database.EnsureCreated();
-
-        }  
+        }
 
         public void Dispose()
         {
