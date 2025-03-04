@@ -1,9 +1,8 @@
-# MyShop
-    # Project Overview
-    This project provides a complete user and product management system with features such as authentication,
+# Project Overview
+    This project provides a user and product management system with features such as authentication,
     product listing, shopping cart, and order placement.
     The backend exposes REST APIs with Swagger documentation and includes logging, 
-    error handling, caching, and validation mechanisms.
+    error handling, some caching, and validation mechanisms.
 
 ## Features
 ### User Management
@@ -29,7 +28,7 @@
 12. **Display Order Sum**
 13. **Remove Items from Cart**
 14. **Place Order**
-15. **Order Confirmation Alert** 
+15. **Order Confirmation Alert** (Order ID was placed successfully)
 
 ## Functionality & Architecture
 ### API & Documentation
@@ -38,7 +37,6 @@
 
 ### Code Practices
 - **DTO Usage**: All API responses use DTOs (Data Transfer Objects).
-<!-- - **No @JsonIgnore** used in the project. -->
 
 ### Logging & Error Handling
 - **Logging**
@@ -67,6 +65,6 @@
 4. Start the backend server.
 5. Use Swagger to test APIs.
 
-## Contact & Support
-For issues, report them via the issue tracker or contact the support team.
+
+
 

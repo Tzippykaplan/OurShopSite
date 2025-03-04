@@ -17,11 +17,12 @@ namespace OurShop.Controllers
     {
         IUserService _userService;
         IMapper _mapper;
-
-        public UsersController(IUserService userService, IMapper mapper)
+        ILogger<User> _logger;
+        public UsersController(IUserService userService, IMapper mapper, ILogger<User> logger)
         {
             _userService = userService;
             _mapper = mapper;
+            _logger = logger;
         }
 
         // GET api/<UsersController>/5
@@ -76,8 +77,11 @@ namespace OurShop.Controllers
 
         {
             User checkUser = await _userService.loginUser(email, password);
-           if (checkUser != null)
+           if (checkUser != null) {
+                _logger.LogInformation("user { checkUser.UserId } loged in", checkUser.UserId);
                 return Ok(_mapper.Map<User, ReturnLoginUserDto>(checkUser));
+           
+            }
             else
                 return NotFound();
 
