@@ -9,7 +9,7 @@ namespace Test
     public class UserRepositoryIntegrationTest : IClassFixture<DBFixture>
     {
         private readonly IUserRepository _userRepository;
-        public  ShopApiContext _context;
+        private readonly ShopApiContext _context;
 
         public UserRepositoryIntegrationTest(DBFixture fixture)
         {
@@ -27,7 +27,6 @@ namespace Test
             Assert.NotNull(savedUser);
             Assert.NotEqual(0, savedUser.UserId);
             Assert.Equal("jdddll@exakkm", savedUser.Email);
-            _context.Dispose();
         }
 
         [Fact]
@@ -41,8 +40,6 @@ namespace Test
 
             Assert.NotNull(result);
             Assert.Equal(user.Email, result.Email);
-            _context.Dispose();
-
         }
 
         [Fact]
@@ -50,8 +47,6 @@ namespace Test
         {
             var result = await _userRepository.loginUser("invalid@ex", "WrongPass123");
             Assert.Null(result);
-            _context.Dispose();
-
         }
 
         [Fact]
@@ -65,8 +60,6 @@ namespace Test
 
             Assert.NotNull(foundUser);
             Assert.Equal(user.Email, foundUser.Email);
-            _context.Dispose();
-
         }
 
         [Fact]
@@ -74,8 +67,6 @@ namespace Test
         {
             var result = await _userRepository.getUserById(9999);
             Assert.Null(result);
-            _context.Dispose();
-
         }
 
         [Fact]
@@ -94,8 +85,6 @@ namespace Test
             Assert.NotNull(result);
             Assert.Equal(updatedUser.FirstName, result.FirstName);
             Assert.Equal(updatedUser.Email, result.Email);
-            _context.Dispose();
-
         }
 
         [Fact]
@@ -103,10 +92,8 @@ namespace Test
         {
             var nonExistingUser = new User { FirstName = "Ghost", LastName = "User", Email = "ggggghost@ex", Password = "Ghost123!" };
 
-          var result=  await _userRepository.updateUser(90099, nonExistingUser);
+            var result = await _userRepository.updateUser(90099, nonExistingUser);
             Assert.Equal(result, null);
-            _context.Dispose();
-
         }
     }
 }

@@ -97,6 +97,6 @@ const checkPasswordStrength = async (password) => {
     }
 }
 const goTOProducts=() => {
-    window.location.href = "Products.html"
+    window.location.href = "Products.html?fromShoppingBag=1"
 }
  
