@@ -34,7 +34,7 @@
       "launchBrowser": true,
       "launchUrl": "Html/home.html",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "School"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     }
   }
