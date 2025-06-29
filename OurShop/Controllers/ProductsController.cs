@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Services;
 using DTO;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.AspNetCore.Authorization;
 
 namespace OurShop.Controllers
 {
@@ -24,6 +25,7 @@ namespace OurShop.Controllers
 
         }
 
+        [AllowAnonymous] 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> Get(string? desc, int? minPrice, int? maxPrice, [FromQuery] int?[] categoryIds)
         {   

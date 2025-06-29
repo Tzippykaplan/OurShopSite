@@ -5,11 +5,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace OurShop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize] 
     public class CategoriesController : Controller
     {
         ICategoryService _CategoryService;
@@ -24,6 +26,7 @@ namespace OurShop.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<getCategoryDto>>> Get()
         {
             if (!_memoryCache.TryGetValue("CategoriesCache", out IEnumerable<Category> categories))
